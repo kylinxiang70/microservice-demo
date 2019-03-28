@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.kylin</groupId>
     <artifactId>ms-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>ms-demo</name>
     <packaging>pom</packaging>
     <description>microservice demo</description>
