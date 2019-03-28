@@ -1,0 +1,50 @@
+version: "3"
+services:
+  auth-center:
+    build:
+      context: ./auth-center
+      dockerfile: Dockerfile
+    image: ms-demo/auth-center
+    restart: always
+    ports:
+      - 18080:18080
+    networks:
+      - ms-demo-network
+    depends_on:
+      - auth-center-mysql
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: ms-demo/order-service
+    restart: always
+    ports:
+      - 18081:18081
+    networks:
+      - ms-demo-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  auth-center-mysql:
+    image: mysql
+    restart: always
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: authcenter
+    networks:
+      - ms-demo-network
+
+
+
+
+networks:
+  ms-demo-network:
