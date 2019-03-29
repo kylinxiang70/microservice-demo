@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,12 +24,11 @@ import static java.util.stream.Collectors.toList;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
-    @NotEmpty
+    @Column(unique = true)
     private String username;
 
-    @NotEmpty
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)

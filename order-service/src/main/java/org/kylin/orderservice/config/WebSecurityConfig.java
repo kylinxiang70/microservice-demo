@@ -1,7 +1,6 @@
 package org.kylin.orderservice.config;
 
 import org.kylin.infrastructure.Security.jwt.JWTFilter;
-import org.kylin.infrastructure.Security.jwt.JWTUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/hello").access("hasRole('USER')")
                 // 除上面外的所有请求全部需要鉴权认证
                 //.anyRequest().authenticated()
-                .and().addFilterBefore(new JWTFilter(new JWTUtil()), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
         // 禁用缓存
         httpSecurity.headers().cacheControl();
     }
