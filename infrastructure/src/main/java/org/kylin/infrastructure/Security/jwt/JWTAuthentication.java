@@ -1,4 +1,4 @@
-package org.kylin.orderservice.security;
+package org.kylin.infrastructure.Security.jwt;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,3 +56,4 @@ public class JWTAuthentication implements Authentication {
         return username;
     }
 }
+

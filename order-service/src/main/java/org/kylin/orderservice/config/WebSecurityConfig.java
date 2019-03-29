@@ -1,8 +1,7 @@
 package org.kylin.orderservice.config;
 
-import org.kylin.orderservice.security.JWTFilter;
-import org.kylin.orderservice.security.JWTUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.kylin.infrastructure.Security.jwt.JWTFilter;
+import org.kylin.infrastructure.Security.jwt.JWTUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JWTUtil jwtUtil;
 
     //允许跨域
     @Bean
@@ -46,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/hello").access("hasRole('USER')")
                 // 除上面外的所有请求全部需要鉴权认证
                 //.anyRequest().authenticated()
-                .and().addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JWTFilter(new JWTUtil()), UsernamePasswordAuthenticationFilter.class);
         // 禁用缓存
         httpSecurity.headers().cacheControl();
     }

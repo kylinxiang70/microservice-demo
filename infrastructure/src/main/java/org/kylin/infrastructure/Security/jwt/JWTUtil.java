@@ -1,14 +1,11 @@
-package org.kylin.orderservice.security;
+package org.kylin.infrastructure.Security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.kylin.orderservice.exception.InvalidJwtAuthenticationException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.kylin.infrastructure.exception.InvalidJwtAuthenticationException;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
@@ -16,18 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Component
 public class JWTUtil {
-    @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "secret";
-
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 3600000; // 1h
-
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
+    private static String secretKey = Base64.getEncoder().encodeToString("secret".getBytes());
 
     public Optional<JWTAuthentication> getJWTAuthentication(ServletRequest req) {
         String token = resolveToken((HttpServletRequest) req);
@@ -40,7 +27,8 @@ public class JWTUtil {
     }
 
     private String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody().getSubject();
     }
 
     private String resolveToken(HttpServletRequest req) {
@@ -79,3 +67,4 @@ public class JWTUtil {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(resolvedToken);
     }
 }
+

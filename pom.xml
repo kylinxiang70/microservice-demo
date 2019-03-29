@@ -19,6 +19,7 @@
         <module>auth-center</module>
         <module>order-service</module>
         <module>shopping-car-service</module>
+        <module>infrastructure</module>
     </modules>
 
     <properties>
