@@ -12,17 +12,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class JWTFilter extends OncePerRequestFilter {
-    private JWTUtil jwtUtil;
-
-    public JWTFilter(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws
             ServletException, IOException {
         try {
-            Optional<JWTAuthentication> authentication = jwtUtil.getJWTAuthentication(req);
+            Optional<JWTAuthentication> authentication = JWTUtil.getJWTAuthentication(req);
             SecurityContextHolder.getContext().setAuthentication(authentication.orElse(null));
             filterChain.doFilter(req, res);
         } catch (JwtException e) {

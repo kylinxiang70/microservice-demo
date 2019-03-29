@@ -16,7 +16,7 @@ import java.util.Optional;
 public class JWTUtil {
     private static String secretKey = Base64.getEncoder().encodeToString("secret".getBytes());
 
-    public Optional<JWTAuthentication> getJWTAuthentication(ServletRequest req) {
+    public static Optional<JWTAuthentication> getJWTAuthentication(ServletRequest req) {
         String token = resolveToken((HttpServletRequest) req);
         if (token != null && validateToken(token)) {
             if (checkRole(token)) {
@@ -26,12 +26,12 @@ public class JWTUtil {
         return Optional.empty();
     }
 
-    private String getUsername(String token) {
+    public static String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
-    private String resolveToken(HttpServletRequest req) {
+    private static String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7, bearerToken.length());
@@ -39,17 +39,17 @@ public class JWTUtil {
         return null;
     }
 
-    private boolean checkRole(String resolvedToken) {
+    private static boolean checkRole(String resolvedToken) {
         List<String> roles = getRoles(resolvedToken);
         return roles.stream().anyMatch(x -> x.equals("ROLE_USER"));
     }
 
-    private List<String> getRoles(String resolvedToken) {
+    private static List<String> getRoles(String resolvedToken) {
         Jws<Claims> claims = getClaims(resolvedToken);
         return (List<String>) claims.getBody().get("roles", List.class);
     }
 
-    private boolean validateToken(String token) {
+    private static boolean validateToken(String token) {
         try {
             Jws<Claims> claims = getClaims(token);
 
@@ -63,7 +63,7 @@ public class JWTUtil {
         }
     }
 
-    private Jws<Claims> getClaims(String resolvedToken) {
+    private static Jws<Claims> getClaims(String resolvedToken) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(resolvedToken);
     }
 }
