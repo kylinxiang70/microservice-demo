@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -23,14 +24,14 @@ public class DataInitializer implements CommandLineRunner {
         this.userRepository.save(User.builder()
                 .username("user")
                 .password(this.passwordEncoder.encode("password"))
-                .roles(Arrays.asList("ROLE_USER"))
+                .roles(new HashSet<>(Arrays.asList("ROLE_USER")))
                 .build()
         );
 
         this.userRepository.save(User.builder()
                 .username("admin")
                 .password(this.passwordEncoder.encode("password"))
-                .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
+                .roles(new HashSet<>(Arrays.asList("ROLE_USER", "ROLE_ADMIN")))
                 .build()
         );
     }
