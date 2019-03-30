@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
+    private static final long serialVersionUID = -3945676016438783233L;
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
