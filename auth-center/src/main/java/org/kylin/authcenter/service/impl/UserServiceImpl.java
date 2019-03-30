@@ -1,16 +1,20 @@
 package org.kylin.authcenter.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.kylin.authcenter.constant.InfoConstant;
 import org.kylin.authcenter.entity.User;
-import org.kylin.authcenter.exception.UserNotFoundException;
+import org.kylin.authcenter.exception.UserOperationException;
 import org.kylin.authcenter.repository.UserRepository;
 import org.kylin.authcenter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -27,15 +31,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        checkUserInfo(user);
+        checkUserCreateInfo(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User result;
+        try {
+            result = userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            Throwable exception = Optional.ofNullable(e.getRootCause()).orElse(e);
+            if (exception.getMessage().contains(InfoConstant.DUPLICATE)) {
+                log.error(InfoConstant.USER_HAS_ALREADY_EXIST);
+                throw new UserOperationException(InfoConstant.USER_HAS_ALREADY_EXIST);
+            } else {
+                log.error(exception.getMessage());
+                throw new UserOperationException(exception.getMessage());
+            }
+
+        }
+        return result;
     }
 
     @Override
     public User update(User user) {
-        if (null == user.getId() || null == userRepository.getOne(user.getId())) {
-            throw new UserNotFoundException("User not exists!");
+        String id = Optional.ofNullable(user.getId())
+                .orElseThrow(() -> new UserOperationException(
+                        MessageFormat.format(InfoConstant.PROPERTIES_CANNOT_BE_EMPTY_1, InfoConstant.ID)));
+        if (0L == userRepository.countById(id)) {
+            throw new UserOperationException(MessageFormat.format(
+                    InfoConstant.USER_IS_NOT_EXIST_2, InfoConstant.ID, id));
         }
         return userRepository.save(user);
     }
@@ -47,8 +69,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByName(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found: " +
-                username));
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserOperationException(
+                        MessageFormat.format(InfoConstant.USER_IS_NOT_EXIST_2, InfoConstant.USERNAME, username)));
     }
 
     @Override
@@ -58,30 +81,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(String id) {
-        return userRepository.getOne(id);
+        return userRepository.findById(id).orElseThrow(() -> new UserOperationException(
+                MessageFormat.format(InfoConstant.USER_IS_NOT_EXIST_2, InfoConstant.ID, id)));
     }
 
-    private void checkUserInfo(User user) {
+    private void checkUserCreateInfo(User user) {
         List<String> infos = new ArrayList<>();
 
         if (null == user.getUsername() || "".equals(user.getUsername())) {
-            infos.add("Username cannot be empty. ");
+            infos.add(MessageFormat.format(InfoConstant.PROPERTIES_CANNOT_BE_EMPTY_1, InfoConstant.USERNAME));
         }
 
         if (null == user.getPassword()) {
-            infos.add("Password cannot be empty");
+            infos.add(MessageFormat.format(InfoConstant.PROPERTIES_CANNOT_BE_EMPTY_1, InfoConstant.PASSWORD));
         } else if (user.getPassword().length() < 6) {
-            infos.add("Passwords must contain at least six characters");
+            infos.add(MessageFormat.format(InfoConstant.PASSWORD_LEAST_CHAR_1, 6));
         }
 
         if (null == user.getRoles() || user.getRoles().isEmpty()) {
-            infos.add("Roles cannot be empty");
+            infos.add(MessageFormat.format(InfoConstant.PROPERTIES_CANNOT_BE_EMPTY_1, InfoConstant.ROLES));
         }
 
         if (!infos.isEmpty()) {
             log.error(infos.toString());
-            throw new IllegalArgumentException(infos.toString());
+            throw new UserOperationException(infos.toString());
         }
-
     }
 }

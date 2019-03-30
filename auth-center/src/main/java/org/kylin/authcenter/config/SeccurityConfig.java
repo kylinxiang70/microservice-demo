@@ -35,19 +35,19 @@ public class SeccurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                // 设置UserDetailsService
+                // set UserDetailsService
                 .userDetailsService(this.userDetailsService)
-                // 使用BCrypt进行密码的hash
+                // password encoder
                 .passwordEncoder(passwordEncoder());
     }
 
-    // 装载BCrypt密码编码器
+    // load password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //允许跨域
+    // cross domain
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
@@ -64,18 +64,18 @@ public class SeccurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .httpBasic().disable()
-                // 取消csrf
+                // disable csrf
                 .csrf().disable()
-                // 基于token，所以不需要session
+                // based on jwt, disable session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 对于获取token的rest api要允许匿名访问
+                // anonymous access
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/users/**").permitAll()
-                // 除上面外的所有请求全部需要鉴权认证
+                // check the auth of the rest of the request
                 .anyRequest().authenticated();
-        // 禁用缓存
+        // disable cache
         httpSecurity.headers().cacheControl();
     }
 }
