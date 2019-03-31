@@ -24,6 +24,13 @@ Red Hat's definition:
 TODO
 
 ## Business Scenario Design
+### signup
+
+![signup](https://github.com/kylin1994/microservice-demo/blob/master/pic/signup.png)
+### login
+
+![login](https://github.com/kylin1994/microservice-demo/blob/master/pic/login.png)
+
 TODO
 
 ## Application Build
