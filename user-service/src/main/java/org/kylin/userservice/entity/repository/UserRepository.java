@@ -1,0 +1,7 @@
+package org.kylin.userservice.entity.repository;
+
+import org.kylin.userservice.entity.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, String> {
+}
