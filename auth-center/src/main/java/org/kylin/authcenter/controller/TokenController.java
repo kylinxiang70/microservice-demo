@@ -19,7 +19,7 @@ public class TokenController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<TokenDto> getToken(@RequestBody BasicAuthDto dto) {
         return ok(tokenService.getToken(dto));
     }

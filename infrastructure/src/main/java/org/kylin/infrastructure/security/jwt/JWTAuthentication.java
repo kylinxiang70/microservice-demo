@@ -1,4 +1,4 @@
-package org.kylin.infrastructure.Security.jwt;
+package org.kylin.infrastructure.security.jwt;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

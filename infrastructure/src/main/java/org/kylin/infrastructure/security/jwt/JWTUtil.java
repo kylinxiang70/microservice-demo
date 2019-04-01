@@ -1,4 +1,4 @@
-package org.kylin.infrastructure.Security.jwt;
+package org.kylin.infrastructure.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

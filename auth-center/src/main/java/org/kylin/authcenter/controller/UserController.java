@@ -53,4 +53,11 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable String id) {
         return ok().body(userService.getUserById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable String id) {
+        userService.deleteById(id);
+    }
+
+    ;
 }

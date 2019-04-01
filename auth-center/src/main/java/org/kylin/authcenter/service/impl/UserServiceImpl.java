@@ -68,6 +68,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteById(String id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
     public User getUserByName(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserOperationException(

@@ -1,4 +1,4 @@
-package org.kylin.infrastructure.Security.jwt;
+package org.kylin.infrastructure.security.jwt;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.core.context.SecurityContextHolder;
