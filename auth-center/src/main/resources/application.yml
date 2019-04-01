@@ -35,6 +35,12 @@ spring:
     jpa:
       repositories.enabled: true
 
+  rabbitmq:
+    host: rabbitmq-service
+    port: 5672
+    username: guest
+    password: guest
+
 logging:
   level:
     org.springframework.web: INFO

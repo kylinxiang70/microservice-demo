@@ -6,6 +6,7 @@ spring:
   application:
     name: userAuth-service
 
+  # jackson config
   jackson:
     mapper:
       DEFAULT_VIEW_INCLUSION: true
@@ -19,13 +20,15 @@ spring:
     #default-property-inclusion: non_empty
 
 
+  # mysql config
   datasource:
-    #url: jdbc:mysql://user-service:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
-    url: jdbc:mysql://localhost:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://user-service-mysql:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    #url: jdbc:mysql://localhost:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  # jpa config
   jpa:
    database: MYSQL
    show-sql: true
@@ -35,10 +38,19 @@ spring:
      hibernate:
      dialect: org.hibernate.dialect.MySQL5Dialect
 
+  # spring data jpa config
   data:
     jpa:
       repositories.enabled: true
 
+  # rabbitmq config
+  rabbitmq:
+    host: rabbitmq-service
+    port: 5672
+    username: guest
+    password: guest
+
+# log config
 logging:
   level:
     org.springframework.web: INFO

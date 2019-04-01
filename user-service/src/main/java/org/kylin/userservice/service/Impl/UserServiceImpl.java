@@ -2,9 +2,11 @@ package org.kylin.userservice.service.Impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kylin.userservice.constant.InfoConstant;
+import org.kylin.userservice.entity.AuthDto;
 import org.kylin.userservice.entity.Filter;
 import org.kylin.userservice.entity.User;
 import org.kylin.userservice.exception.UserOperationException;
+import org.kylin.userservice.mq.AuthSender;
 import org.kylin.userservice.repository.CommonRepository;
 import org.kylin.userservice.repository.UserRepository;
 import org.kylin.userservice.service.UserService;
@@ -25,13 +27,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private CommonRepository<User> commonRepository;
+    private AuthSender authSender;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CommonRepository<User>
-            commonRepository) {
+            commonRepository, AuthSender authSender) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.commonRepository = commonRepository;
+        this.authSender = authSender;
     }
 
     @Override
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         checkUserCreateInfo(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         User result;
         try {
             result = userRepository.save(user);
@@ -55,8 +60,10 @@ public class UserServiceImpl implements UserService {
                 log.error(exception.getMessage());
                 throw new UserOperationException(exception.getMessage());
             }
-
         }
+
+        log.info("Send authorization message to auth-center...");
+        authSender.send(new AuthDto(result.getId(), result.getUsername(), result.getPassword()));
         return result;
     }
 
