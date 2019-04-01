@@ -1,6 +1,6 @@
-package org.kylin.userservice.entity.exception.handler;
+package org.kylin.userservice.exception.handler;
 
-import org.kylin.userservice.entity.exception.UserOperationException;
+import org.kylin.userservice.exception.UserOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

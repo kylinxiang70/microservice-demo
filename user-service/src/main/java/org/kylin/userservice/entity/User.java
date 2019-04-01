@@ -1,4 +1,4 @@
-package org.kylin.userservice.entity.entity;
+package org.kylin.userservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +30,8 @@ public class User implements Serializable {
     private String password;
 
     private String email;
+
+    private int age;
 
     // if user is authorized by auth-center, active is true.
     private boolean active;

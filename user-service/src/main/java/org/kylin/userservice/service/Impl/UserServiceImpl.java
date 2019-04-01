@@ -1,11 +1,13 @@
-package org.kylin.userservice.entity.service.Impl;
+package org.kylin.userservice.service.Impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.kylin.userservice.entity.entity.User;
-import org.kylin.userservice.entity.constant.InfoConstant;
-import org.kylin.userservice.entity.exception.UserOperationException;
-import org.kylin.userservice.entity.repository.UserRepository;
-import org.kylin.userservice.entity.service.UserService;
+import org.kylin.userservice.constant.InfoConstant;
+import org.kylin.userservice.entity.Filter;
+import org.kylin.userservice.entity.User;
+import org.kylin.userservice.exception.UserOperationException;
+import org.kylin.userservice.repository.CommonRepository;
+import org.kylin.userservice.repository.UserRepository;
+import org.kylin.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,11 +24,14 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private CommonRepository<User> commonRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CommonRepository<User>
+            commonRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.commonRepository = commonRepository;
     }
 
     @Override
@@ -53,6 +58,11 @@ public class UserServiceImpl implements UserService {
 
         }
         return result;
+    }
+
+    @Override
+    public List<User> queryByFilter(List<Filter> filters) {
+        return commonRepository.getEntitiesByFilter(User.class, filters);
     }
 
     private void checkUserCreateInfo(User user) {

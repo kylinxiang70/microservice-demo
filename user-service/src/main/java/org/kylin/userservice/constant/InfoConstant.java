@@ -1,4 +1,4 @@
-package org.kylin.userservice.entity.constant;
+package org.kylin.userservice.constant;
 
 public class InfoConstant {
     // User service information. If require params, the suffix number is the number of params

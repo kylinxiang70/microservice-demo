@@ -20,7 +20,7 @@ spring:
 
 
   datasource:
-    #url: jdbc:mysql://userAuth-service:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    #url: jdbc:mysql://user-service:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
     url: jdbc:mysql://localhost:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456

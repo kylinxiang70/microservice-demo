@@ -1,7 +1,8 @@
-package org.kylin.userservice.entity.controller;
+package org.kylin.userservice.controller;
 
-import org.kylin.userservice.entity.entity.User;
-import org.kylin.userservice.entity.service.UserService;
+import org.kylin.userservice.entity.Filter;
+import org.kylin.userservice.entity.User;
+import org.kylin.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +27,10 @@ public class UserController {
     @PostMapping
     public User saveUser(@RequestBody User user) {
         return userService.save(user);
+    }
+
+    @PostMapping("/filter")
+    public List<User> getUsersByFilter(@RequestBody List<Filter> filters) {
+        return userService.queryByFilter(filters);
     }
 }

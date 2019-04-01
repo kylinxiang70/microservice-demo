@@ -1,4 +1,4 @@
-package org.kylin.userservice.entity.config;
+package org.kylin.userservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

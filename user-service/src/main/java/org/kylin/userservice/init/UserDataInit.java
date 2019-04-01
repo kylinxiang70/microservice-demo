@@ -1,7 +1,7 @@
-package org.kylin.userservice.entity.init;
+package org.kylin.userservice.init;
 
-import org.kylin.userservice.entity.entity.User;
-import org.kylin.userservice.entity.repository.UserRepository;
+import org.kylin.userservice.entity.User;
+import org.kylin.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
