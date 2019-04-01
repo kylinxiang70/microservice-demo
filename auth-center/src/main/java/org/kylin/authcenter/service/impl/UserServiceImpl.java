@@ -2,6 +2,7 @@ package org.kylin.authcenter.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kylin.authcenter.constant.InfoConstant;
+import org.kylin.authcenter.dto.AuthDto;
 import org.kylin.authcenter.entity.User;
 import org.kylin.authcenter.exception.UserOperationException;
 import org.kylin.authcenter.repository.UserRepository;
@@ -10,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -88,6 +88,19 @@ public class UserServiceImpl implements UserService {
     public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new UserOperationException(
                 MessageFormat.format(InfoConstant.USER_IS_NOT_EXIST_2, InfoConstant.ID, id)));
+    }
+
+    @Transactional
+    @Override
+    public User createDefaultAuthUser(AuthDto dto) {
+        User user = User.builder()
+                .id(dto.getId())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .roles(new HashSet<>(Arrays.asList("ROLE_ADMIN")))
+                .build();
+        checkUserCreateInfo(user);
+        return userRepository.save(user);
     }
 
     private void checkUserCreateInfo(User user) {

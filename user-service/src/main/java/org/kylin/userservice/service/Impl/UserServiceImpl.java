@@ -6,14 +6,19 @@ import org.kylin.userservice.entity.AuthDto;
 import org.kylin.userservice.entity.Filter;
 import org.kylin.userservice.entity.User;
 import org.kylin.userservice.exception.UserOperationException;
-import org.kylin.userservice.mq.AuthSender;
 import org.kylin.userservice.repository.CommonRepository;
 import org.kylin.userservice.repository.UserRepository;
 import org.kylin.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -27,15 +32,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private CommonRepository<User> commonRepository;
-    private AuthSender authSender;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CommonRepository<User>
-            commonRepository, AuthSender authSender) {
+            commonRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.commonRepository = commonRepository;
-        this.authSender = authSender;
     }
 
     @Override
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     @Override
     public User save(User user) {
         checkUserCreateInfo(user);
@@ -63,7 +67,8 @@ public class UserServiceImpl implements UserService {
         }
 
         log.info("Send authorization message to auth-center...");
-        authSender.send(new AuthDto(result.getId(), result.getUsername(), result.getPassword()));
+        createDefaultAuthUser(AuthDto.builder().id(result.getId()).username(user.getUsername())
+                .password(user.getPassword()).build());
         return result;
     }
 
@@ -89,5 +94,15 @@ public class UserServiceImpl implements UserService {
             log.error(infos.toString());
             throw new UserOperationException(infos.toString());
         }
+    }
+
+    private void createDefaultAuthUser(AuthDto dto) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<AuthDto> httpEntity = new HttpEntity<>(dto, headers);
+        //restTemplate.exchange("http://auth-center:18080/users/auth", HttpMethod.POST, httpEntity, Void.class);
+        restTemplate.exchange("http://localhost:18080/users/auth", HttpMethod.POST, httpEntity, Void.class);
+
     }
 }
