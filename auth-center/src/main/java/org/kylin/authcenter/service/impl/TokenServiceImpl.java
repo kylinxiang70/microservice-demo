@@ -1,5 +1,6 @@
 package org.kylin.authcenter.service.impl;
 
+import org.kylin.authcenter.constant.InfoConstant;
 import org.kylin.authcenter.dto.BasicAuthDto;
 import org.kylin.authcenter.dto.TokenDto;
 import org.kylin.authcenter.exception.UserOperationException;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -39,7 +42,8 @@ public class TokenServiceImpl implements TokenService {
         authenticationManager.authenticate(upat);
 
         String token = jwtProvider.createToken(username, this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserOperationException("Username " + username + "not found")).getRoles());
+                .orElseThrow(() -> new UserOperationException(MessageFormat.format
+                        (InfoConstant.USER_NAME_NOT_FOUND_1, username))).getRoles());
         return new TokenDto(username, token);
     }
 }

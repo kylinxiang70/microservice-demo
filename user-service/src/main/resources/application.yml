@@ -22,8 +22,8 @@ spring:
 
   # mysql config
   datasource:
-    #url: jdbc:mysql://user-service-mysql:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
-    url: jdbc:mysql://localhost:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://user-service-mysql:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    #url: jdbc:mysql://localhost:3306/userservie?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -42,13 +42,6 @@ spring:
   data:
     jpa:
       repositories.enabled: true
-
-  # rabbitmq config
-  rabbitmq:
-    host: rabbitmq-service
-    port: 5672
-    username: guest
-    password: guest
 
 # log config
 logging:

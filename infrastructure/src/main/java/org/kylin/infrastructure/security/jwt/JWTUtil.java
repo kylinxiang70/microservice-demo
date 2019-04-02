@@ -5,25 +5,69 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.kylin.infrastructure.exception.InvalidJwtAuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 public class JWTUtil {
     private static String secretKey = Base64.getEncoder().encodeToString("secret".getBytes());
 
-    public static Optional<JWTAuthentication> getJWTAuthentication(ServletRequest req) {
+    public static Authentication getJWTAuthentication(ServletRequest req) {
         String token = resolveToken((HttpServletRequest) req);
         if (token != null && validateToken(token)) {
-            if (checkRole(token)) {
-                return Optional.of(new JWTAuthentication(true, getRoles(token), getUsername(token)));
-            }
+//            if (checkRole(token)) {
+//                //return Optional.of(new JWTAuthentication(true, getRoles(token), getUsername(token)));
+//            }
+            UserDetails userDetails = new UserDetails() {
+                @Override
+                public Collection<? extends GrantedAuthority> getAuthorities() {
+                    return getRoles(token).stream().map(SimpleGrantedAuthority::new).collect(toList());
+                }
+
+                @Override
+                public String getPassword() {
+                    return "";
+                }
+
+                @Override
+                public String getUsername() {
+                    return JWTUtil.getUsername(token);
+                }
+
+                @Override
+                public boolean isAccountNonExpired() {
+                    return true;
+                }
+
+                @Override
+                public boolean isAccountNonLocked() {
+                    return true;
+                }
+
+                @Override
+                public boolean isCredentialsNonExpired() {
+                    return true;
+                }
+
+                @Override
+                public boolean isEnabled() {
+                    return true;
+                }
+            };
+            return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         }
-        return Optional.empty();
+        return null;
     }
 
     public static String getUsername(String token) {

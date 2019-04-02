@@ -1,13 +1,11 @@
-package org.kylin.userservice.entity;
-
-import com.fasterxml.jackson.annotation.JsonValue;
+package org.kylin.authcenter.entity;
 
 public enum Operation {
     EQ("EQ");
 
     private String code;
 
-    private Operation(String code) {
+    Operation(String code) {
         this.code = code;
     }
 

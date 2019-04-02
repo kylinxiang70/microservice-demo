@@ -2,8 +2,8 @@ package org.kylin.userservice.service.Impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kylin.userservice.constant.InfoConstant;
-import org.kylin.userservice.entity.AuthDto;
-import org.kylin.userservice.entity.Filter;
+import org.kylin.userservice.dto.AuthDto;
+import org.kylin.userservice.dto.Filter;
 import org.kylin.userservice.entity.User;
 import org.kylin.userservice.exception.UserOperationException;
 import org.kylin.userservice.repository.CommonRepository;

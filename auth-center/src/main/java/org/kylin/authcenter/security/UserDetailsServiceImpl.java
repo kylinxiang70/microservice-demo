@@ -1,5 +1,6 @@
 package org.kylin.authcenter.security;
 
+import org.kylin.authcenter.constant.InfoConstant;
 import org.kylin.authcenter.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userRepository.findByUsername(s)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        MessageFormat.format("Username not found: {0}", s)));
+                        MessageFormat.format(InfoConstant.USER_NAME_NOT_FOUND_1, s)));
     }
 }

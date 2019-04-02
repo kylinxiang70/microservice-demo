@@ -1,6 +1,6 @@
 package org.kylin.userservice.controller;
 
-import org.kylin.userservice.entity.Filter;
+import org.kylin.userservice.dto.Filter;
 import org.kylin.userservice.entity.User;
 import org.kylin.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

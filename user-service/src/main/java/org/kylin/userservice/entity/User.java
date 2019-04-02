@@ -21,7 +21,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(length = 128)
+    @Column(length = 32)
     private String id;
 
     @Column(unique = true)

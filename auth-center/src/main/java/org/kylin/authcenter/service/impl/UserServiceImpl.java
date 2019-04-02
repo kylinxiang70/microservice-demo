@@ -1,10 +1,13 @@
 package org.kylin.authcenter.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.kylin.authcenter.constant.AuthConstant;
 import org.kylin.authcenter.constant.InfoConstant;
 import org.kylin.authcenter.dto.AuthDto;
+import org.kylin.authcenter.entity.Filter;
 import org.kylin.authcenter.entity.User;
 import org.kylin.authcenter.exception.UserOperationException;
+import org.kylin.authcenter.repository.CommonRepository;
 import org.kylin.authcenter.repository.UserRepository;
 import org.kylin.authcenter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +24,14 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private CommonRepository<User> commonRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CommonRepository<User>
+            commonRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.commonRepository = commonRepository;
     }
 
 
@@ -51,18 +57,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user) {
-        String id = Optional.ofNullable(user.getId())
-                .orElseThrow(() -> new UserOperationException(
-                        MessageFormat.format(InfoConstant.PROPERTIES_CANNOT_BE_EMPTY_1, InfoConstant.ID)));
-        if (0L == userRepository.countById(id)) {
-            throw new UserOperationException(MessageFormat.format(
-                    InfoConstant.USER_IS_NOT_EXIST_2, InfoConstant.ID, id));
-        }
-        return userRepository.save(user);
-    }
-
-    @Override
     public void deleteByUsername(String username) {
         userRepository.deleteByUsername(username);
     }
@@ -70,13 +64,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(String id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public User getUserByName(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserOperationException(
-                        MessageFormat.format(InfoConstant.USER_IS_NOT_EXIST_2, InfoConstant.USERNAME, username)));
     }
 
     @Override
@@ -97,10 +84,15 @@ public class UserServiceImpl implements UserService {
                 .id(dto.getId())
                 .username(dto.getUsername())
                 .password(dto.getPassword())
-                .roles(new HashSet<>(Arrays.asList("ROLE_ADMIN")))
+                .roles(new HashSet<>(Arrays.asList(AuthConstant.ROLE_USER)))
                 .build();
         checkUserCreateInfo(user);
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getUsersByFilter(List<Filter> filters) {
+        return commonRepository.getEntitiesByFilter(User.class, filters);
     }
 
     private void checkUserCreateInfo(User user) {

@@ -3,6 +3,7 @@ package org.kylin.authcenter.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.kylin.authcenter.constant.InfoConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public class JWTProvider {
     public String createToken(String username, Set<String> roles) {
 
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
+        claims.put(InfoConstant.ROLES, roles);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);

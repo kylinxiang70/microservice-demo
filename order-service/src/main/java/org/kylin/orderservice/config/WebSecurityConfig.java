@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/hello").access("hasRole('USER')")
+                .antMatchers("/hello").access("hasRole('ADMIN')")
                 // 除上面外的所有请求全部需要鉴权认证
                 //.anyRequest().authenticated()
                 .and().addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);

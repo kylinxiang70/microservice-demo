@@ -1,6 +1,6 @@
 package org.kylin.userservice.service;
 
-import org.kylin.userservice.entity.Filter;
+import org.kylin.userservice.dto.Filter;
 import org.kylin.userservice.entity.User;
 
 import java.util.List;

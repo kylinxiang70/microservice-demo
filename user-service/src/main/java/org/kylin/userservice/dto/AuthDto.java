@@ -1,4 +1,4 @@
-package org.kylin.userservice.entity;
+package org.kylin.userservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

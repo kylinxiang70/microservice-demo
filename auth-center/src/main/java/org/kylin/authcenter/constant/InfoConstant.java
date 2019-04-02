@@ -7,6 +7,7 @@ public class InfoConstant {
     public static final String PROPERTIES_CANNOT_BE_EMPTY_1 = "{0} cannot be empty.";
     public static final String USER_IS_NOT_EXIST_2 = "User is not exist, {0}: {1}.";
     public static final String PASSWORD_LEAST_CHAR_1 = "Passwords must contain at least {0} characters.";
+    public static final String USER_NAME_NOT_FOUND_1 = "Username not found: {0}.";
     // User properties
     public static final String ID = "id";
     public static final String USERNAME = "username";
