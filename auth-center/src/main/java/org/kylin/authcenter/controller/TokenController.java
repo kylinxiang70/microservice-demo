@@ -19,6 +19,12 @@ public class TokenController {
     @Autowired
     private TokenService tokenService;
 
+    /**
+     * Login and return jwt token
+     *
+     * @param dto
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<TokenDto> getToken(@RequestBody BasicAuthDto dto) {
         return ok(tokenService.getToken(dto));

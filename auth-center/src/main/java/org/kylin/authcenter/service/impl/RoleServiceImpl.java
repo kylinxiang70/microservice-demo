@@ -30,6 +30,7 @@ public class RoleServiceImpl implements RoleService {
                     InfoConstant.PROPERTIES_CANNOT_BE_EMPTY_1, InfoConstant.ROLES));
         }
         temp.setRoles(dto.getRoles());
+        temp.setId(checkedId);
         userRepository.save(temp);
     }
 }

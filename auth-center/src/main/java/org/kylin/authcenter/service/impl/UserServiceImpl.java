@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kylin.authcenter.constant.AuthConstant;
 import org.kylin.authcenter.constant.InfoConstant;
 import org.kylin.authcenter.dto.AuthDto;
-import org.kylin.authcenter.entity.Filter;
+import org.kylin.authcenter.dto.Filter;
 import org.kylin.authcenter.entity.User;
 import org.kylin.authcenter.exception.UserOperationException;
 import org.kylin.authcenter.repository.CommonRepository;
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createDefaultAuthUser(AuthDto dto) {
         User user = User.builder()
-                .id(dto.getId())
+                .userId(dto.getId())
                 .username(dto.getUsername())
                 .password(dto.getPassword())
                 .roles(new HashSet<>(Arrays.asList(AuthConstant.ROLE_USER)))

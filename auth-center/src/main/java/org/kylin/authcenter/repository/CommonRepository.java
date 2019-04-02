@@ -1,6 +1,6 @@
 package org.kylin.authcenter.repository;
 
-import org.kylin.authcenter.entity.Filter;
+import org.kylin.authcenter.dto.Filter;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

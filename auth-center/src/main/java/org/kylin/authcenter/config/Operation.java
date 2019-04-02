@@ -1,4 +1,4 @@
-package org.kylin.userservice.dto;
+package org.kylin.authcenter.config;
 
 public enum Operation {
     EQ("EQ");

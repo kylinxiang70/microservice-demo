@@ -1,7 +1,7 @@
 package org.kylin.authcenter.service;
 
 import org.kylin.authcenter.dto.AuthDto;
-import org.kylin.authcenter.entity.Filter;
+import org.kylin.authcenter.dto.Filter;
 import org.kylin.authcenter.entity.User;
 
 import java.util.List;

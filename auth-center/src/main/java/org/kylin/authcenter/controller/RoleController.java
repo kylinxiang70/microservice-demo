@@ -15,6 +15,13 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    /**
+     * Save and update role
+     *
+     * @param id
+     * @param dto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Void> saveRole(@PathVariable String id, @RequestBody RoleDto dto) {
         roleService.saveRole(id, dto);

@@ -1,4 +1,4 @@
-package org.kylin.authcenter.entity;
+package org.kylin.userservice.constant;
 
 public enum Operation {
     EQ("EQ");

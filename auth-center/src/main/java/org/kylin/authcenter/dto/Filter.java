@@ -1,9 +1,10 @@
-package org.kylin.authcenter.entity;
+package org.kylin.authcenter.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.kylin.authcenter.config.Operation;
 
 import java.io.Serializable;
 
