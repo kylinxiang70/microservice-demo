@@ -21,6 +21,7 @@
         <module>shopping-cart-service</module>
         <module>infrastructure</module>
         <module>user-service</module>
+        <module>product-service</module>
     </modules>
 
     <properties>
