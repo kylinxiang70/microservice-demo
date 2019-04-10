@@ -3,6 +3,7 @@ package org.kylin.authcenter.service.impl;
 import org.kylin.authcenter.constant.InfoConstant;
 import org.kylin.authcenter.dto.BasicAuthDto;
 import org.kylin.authcenter.dto.TokenDto;
+import org.kylin.authcenter.entity.User;
 import org.kylin.authcenter.exception.UserOperationException;
 import org.kylin.authcenter.repository.UserRepository;
 import org.kylin.authcenter.security.jwt.JWTProvider;
@@ -41,9 +42,11 @@ public class TokenServiceImpl implements TokenService {
 
         authenticationManager.authenticate(upat);
 
-        String token = jwtProvider.createToken(username, this.userRepository.findByUsername(username)
+        User user = this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserOperationException(MessageFormat.format
-                        (InfoConstant.USER_NAME_NOT_FOUND_1, username))).getRoles());
+                        (InfoConstant.USER_NAME_NOT_FOUND_1, username)));
+
+        String token = jwtProvider.createToken(user);
         return new TokenDto(username, token);
     }
 }

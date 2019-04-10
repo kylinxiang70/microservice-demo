@@ -4,13 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.kylin.authcenter.constant.InfoConstant;
+import org.kylin.authcenter.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Set;
 
 @Component
 public class JWTProvider {
@@ -25,10 +25,11 @@ public class JWTProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username, Set<String> roles) {
+    public String createToken(User user) {
 
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put(InfoConstant.ROLES, roles);
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put(InfoConstant.ROLES, user.getRoles());
+        claims.put(InfoConstant.ID, user.getId());
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
