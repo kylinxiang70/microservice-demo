@@ -49,6 +49,23 @@ services:
       restart_policy:
         condition: on-failure
 
+  product-service:
+      build:
+        context: ./product-service
+        dockerfile: Dockerfile
+      image: ms-demo/product-service
+      restart: always
+      depends_on:
+        - product-service-mysql
+      ports:
+        - "18083:18083"
+      networks:
+        - ms-demo-network
+      deploy:
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+
   auth-center-mysql:
     image: mysql:5.7
     restart: always
@@ -60,6 +77,16 @@ services:
       - ms-demo-network
 
   user-service-mysql:
+    image: mysql:5.7
+    restart: always
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      - ms-demo-network
+
+  product-service-mysql:
     image: mysql:5.7
     restart: always
     expose:
