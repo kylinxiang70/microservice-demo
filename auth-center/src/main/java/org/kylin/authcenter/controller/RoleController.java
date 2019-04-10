@@ -18,9 +18,9 @@ public class RoleController {
     /**
      * Save and update role
      *
-     * @param id
-     * @param dto
-     * @return
+     * @param id role uuid
+     * @param dto roles
+     * @return if success ok, else http status code 500
      */
     @PostMapping
     public ResponseEntity<Void> saveRole(@PathVariable String id, @RequestBody RoleDto dto) {

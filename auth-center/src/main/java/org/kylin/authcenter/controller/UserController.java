@@ -25,10 +25,11 @@ public class UserController {
     }
 
     /**
-     * Createt new user
+     * Create new user
+     * docke
      *
-     * @param user
-     * @return
+     * @param user user
+     * @return created user
      */
     @PostMapping
     public ResponseEntity<User> save(@RequestBody User user) {
@@ -38,8 +39,8 @@ public class UserController {
     /**
      * Get users by filter
      *
-     * @param filters
-     * @return
+     * @param filters the conditions to query users
+     * @return users filtered by conditions
      */
     @PostMapping("/filter")
     public ResponseEntity<List<User>> getUserByFilter(@RequestBody List<Filter> filters) {
@@ -49,7 +50,7 @@ public class UserController {
     /**
      * Get all users
      *
-     * @return
+     * @return all users
      */
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -59,8 +60,8 @@ public class UserController {
     /**
      * Query user by id
      *
-     * @param id
-     * @return
+     * @param id user uuid
+     * @return specific user
      */
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
@@ -70,7 +71,7 @@ public class UserController {
     /**
      * Delete user by id
      *
-     * @param id
+     * @param id user uuid
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id) {

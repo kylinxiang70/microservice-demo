@@ -1,6 +1,7 @@
 package org.kylin.userservice.controller;
 
 import org.kylin.userservice.dto.Filter;
+import org.kylin.userservice.dto.UserDto;
 import org.kylin.userservice.entity.User;
 import org.kylin.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User saveUser(@RequestBody User user) {
-        return userService.save(user);
+    public User saveUser(@RequestBody UserDto userDto) {
+        return userService.save(userDto);
     }
 
     @PostMapping("/filter")

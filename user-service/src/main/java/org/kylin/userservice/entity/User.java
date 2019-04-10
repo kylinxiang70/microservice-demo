@@ -27,14 +27,9 @@ public class User implements Serializable {
     @Column(unique = true)
     private String username;
 
-    private String password;
-
     private String email;
 
     private int age;
-
-    // if user is authorized by auth-center, active is true.
-    private boolean active;
 
     @Column(name = "phone_number")
     private String phoneNumber;
