@@ -1,5 +1,6 @@
 package org.kylin.authcenter.init;
 
+import org.kylin.authcenter.constant.AuthConstant;
 import org.kylin.authcenter.entity.User;
 import org.kylin.authcenter.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,14 @@ public class DataInit implements CommandLineRunner {
                 .userId(UUID.randomUUID().toString().replace("-", ""))
                 .username("user")
                 .password(passwordEncoder.encode("111111"))
-                .roles(new HashSet<>(Arrays.asList("ROLE_USER")))
+                .roles(new HashSet<>(Arrays.asList(AuthConstant.ROLE_USER)))
                 .build();
 
         User admin = User.builder()
                 .userId(UUID.randomUUID().toString().replace("-", ""))
                 .username("admin")
                 .password(passwordEncoder.encode("111111"))
-                .roles(new HashSet<>(Arrays.asList("ROLE_USER")))
+                .roles(new HashSet<>(Arrays.asList(AuthConstant.ROLE_USER, AuthConstant.ROLE_ADMIN)))
                 .build();
         userRepository.saveAll(Arrays.asList(user, admin));
     }

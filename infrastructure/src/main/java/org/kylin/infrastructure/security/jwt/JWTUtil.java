@@ -26,9 +26,6 @@ public class JWTUtil {
     public static Authentication getJWTAuthentication(ServletRequest req) {
         String token = resolveToken((HttpServletRequest) req);
         if (token != null && validateToken(token)) {
-//            if (checkRole(token)) {
-//                //return Optional.of(new JWTAuthentication(true, getRoles(token), getUsername(token)));
-//            }
             UserDetails userDetails = new UserDetails() {
                 @Override
                 public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -70,7 +67,7 @@ public class JWTUtil {
         return null;
     }
 
-    public static String getUsername(String token) {
+    private static String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getBody().getSubject();
     }
@@ -83,11 +80,7 @@ public class JWTUtil {
         return null;
     }
 
-    private static boolean checkRole(String resolvedToken) {
-        List<String> roles = getRoles(resolvedToken);
-        return roles.stream().anyMatch(x -> x.equals("ROLE_USER"));
-    }
-
+    @SuppressWarnings("unchecked")
     private static List<String> getRoles(String resolvedToken) {
         Jws<Claims> claims = getClaims(resolvedToken);
         return (List<String>) claims.getBody().get("roles", List.class);
@@ -97,11 +90,7 @@ public class JWTUtil {
         try {
             Jws<Claims> claims = getClaims(token);
 
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-
-            return true;
+            return !(claims.getBody().getExpiration().before(new Date()));
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }

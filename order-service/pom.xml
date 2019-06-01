@@ -47,10 +47,6 @@
             <artifactId>jjwt</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.kylin</groupId>
             <artifactId>infrastructure</artifactId>
             <version>0.0.1</version>

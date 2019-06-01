@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.kylin.authcenter.config.Operation;
+import org.kylin.authcenter.constant.Operation;
 
 import java.io.Serializable;
 

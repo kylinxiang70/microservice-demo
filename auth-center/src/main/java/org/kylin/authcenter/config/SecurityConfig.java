@@ -1,5 +1,6 @@
 package org.kylin.authcenter.config;
 
+import org.kylin.infrastructure.security.jwt.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -55,13 +57,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // anonymous access
+                // login required no authority
                 .antMatchers("/auth/login").permitAll()
+                // create user required no authority
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                // get users by filter required ADMIN authority
+                .antMatchers(HttpMethod.POST, "/users/filter").hasRole("ADMIN")
+                // get all users required ADMIN authority
                 .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/users/*").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/users/**").permitAll()
+                // get user by id required USER authority
+                .antMatchers(HttpMethod.GET, "/users/*").hasRole("USER")
+                // delete user by id required ADMIN authority
+                .antMatchers(HttpMethod.DELETE, "/users/*").hasRole("ADMIN")
                 // check the auth of the rest of the request
-                .anyRequest().authenticated();
+                //.anyRequest().authenticated();
+                .and().addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
         // disable cache
         httpSecurity.headers().cacheControl();
     }

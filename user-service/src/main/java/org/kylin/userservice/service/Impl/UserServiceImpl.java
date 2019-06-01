@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<AuthDto> httpEntity = new HttpEntity<>(dto, headers);
-        //restTemplate.exchange("http://auth-center:18080/users/auth", HttpMethod.POST, httpEntity, Void.class);
-        restTemplate.exchange("http://localhost:18080/users/auth", HttpMethod.POST, httpEntity, Void.class);
+        restTemplate.exchange("http://auth-center:18080/users/auth", HttpMethod.POST, httpEntity, Void.class);
+        //restTemplate.exchange("http://localhost:18080/users/auth", HttpMethod.POST, httpEntity, Void.class);
 
     }
 }

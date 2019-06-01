@@ -20,13 +20,13 @@ public class UserDataInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         User user = User.builder()
-                .username("Tom")
-                .email("tom@example.com")
+                .username("user")
+                .email("user@example.com")
                 .phoneNumber("8613900000000")
                 .build();
         User user2 = User.builder()
-                .username("Bob")
-                .email("bob@example.com")
+                .username("admin")
+                .email("admin@example.com")
                 .phoneNumber("8613911111111")
                 .build();
         userRepository.saveAll(Arrays.asList(user, user2));
